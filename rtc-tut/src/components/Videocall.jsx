@@ -14,9 +14,10 @@ const VideoCall = () => {
     const roomId = queryParams.get('room');
 
     useEffect(() => {
-        socketRef.current = io.connect('http://localhost:5000');
+        socketRef.current = io.connect('https://videocall-webrtc-nsi7.onrender.com');
 
-        socketRef.current.on('new peer', async () => {
+        socketRef.current.on('new peer', async (data) => {
+            console.log('New user ' + data + ' joined')
             if (!peerConnectionRef.current) return;  // No peer connection yet
             const offer = await peerConnectionRef.current.createOffer();
             await peerConnectionRef.current.setLocalDescription(offer);
