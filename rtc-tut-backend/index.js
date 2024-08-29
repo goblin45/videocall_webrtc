@@ -14,17 +14,39 @@ const io = socketIo(server, {
 
 app.use(cors());
 
+const roomsCap = {}
+
 io.on('connection', (socket) => {
     console.log('A user connected' + socket.id);
 
-    socket.on('join room', (room) => {
-        socket.join(room);
-        console.log('User joined room: ' + room);
-        socket.to(room).emit('new peer');
-    });
+    // socket.on('join room', (room) => {
+    //     if (roomsCap[room]) {
+    //         if (roomsCap[room] == 2) {
+    //             socket.emit('room full');
+    //             return;
+    //         } else {
+    //             roomsCap[room] += 1;
+    //             socket.join(room)
+    //             console.log('User joined room: ' + room);
+    //             socket.to(room).emit('new peer', {peer: 2});
+    //         }
+    //     } else {
+    //         roomsCap[room] = 1;
+    //         socket.join(room);
+    //         console.log('User joined room: ' + room);
+    //         socket.to(room).emit('new peer', {peer: 1});
+    //     }
+    // });
 
-    socket.on('signal', (signal, room) => {
-        socket.to(room).emit('signal', signal);
+    socket.on('join room', (room) => {
+        console.log('User joined room: ' + room);
+        socket.join(room);
+        socket.to(room).emit('new peer');
+    })
+
+    socket.on('signal', (data, room) => {
+        console.log('signal received: ' + data + room);
+        socket.to(room).emit('signal', data);
     });
 
     socket.on('disconnect', () => {
