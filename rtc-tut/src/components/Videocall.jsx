@@ -10,7 +10,7 @@ import videoOffIcon from '../assets/icons/video-off.webp';
 
 const VideoCall = () => {
     // const serverUrl = 'http://localhost:5000'
-    const serverUrl = 'https://videocall-dummy-backend.onrender.com'
+    const serverUrl = 'https://videocall-webrtc-nsi7.onrender.com'
     const socket = io(serverUrl);
     const roomId = new URLSearchParams(useLocation().search).get('room');
     const [remoteSocketId, setRemoteSocketId] = useState(null);
